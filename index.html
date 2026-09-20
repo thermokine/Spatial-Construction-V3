@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Spatial Reconstruction Trainer</title>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div id="ui-layer">
+    <div id="top-bar">
+        <div class="brand">
+            <span class="brand-mark"></span>
+            <span id="status-text">INITIALIZING</span>
+        </div>
+        <div id="timer-text"></div>
+        <button id="settings-btn">Settings</button>
+    </div>
+
+    <div id="center-content">
+        <div id="msg-instructions" class="message-box">
+            <h1 id="instructions-heading">Mental rotation</h1>
+            <div class="lead" id="instructions-lead">Mentally apply these transformations to the object you just studied.</div>
+            <div id="instruction-list" class="instruction-list"></div>
+            <button id="btn-start-reconstruct" class="action-btn">Begin reconstruction</button>
+        </div>
+    </div>
+
+    <!-- Docked to the side (bottom, on narrow screens) rather than centered,
+         so it never covers the 3D object during the reveal. See #msg-feedback
+         positioning rules in the stylesheet. -->
+    <div id="msg-feedback" class="message-box feedback-panel">
+        <h1>Reconstruction results</h1>
+        <div id="results-container" class="results-grid"></div>
+        <button id="btn-show-truth" class="action-btn secondary">Show true transformation</button>
+    </div>
+
+    <div id="builder-controls">
+        <div class="control-legend">
+            <span class="item"><span class="key">Click</span> add voxel</span>
+            <span class="item"><span class="key">Shift+Click</span> remove voxel</span>
+            <span class="item"><span class="key">Right-drag</span> orbit camera</span>
+        </div>
+        <div id="cube-counter"><span id="cube-counter-text">Cubes: 0 / 0</span><span class="counter-track"><span class="counter-fill" id="cube-counter-fill"></span></span></div>
+        <button id="btn-submit" class="action-btn" style="margin-top:0;">Submit reconstruction</button>
+    </div>
+
+    <div id="next-row">
+        <button id="btn-next" class="action-btn" style="display:none;">Next round</button>
+    </div>
+</div>
+
+<div id="settings-modal">
+    <div class="modal-content">
+        <h2><span class="modal-title-icon">&#9670;</span> Settings</h2>
+
+        <div class="setting-section">
+            <div class="section-label"><span class="section-icon">&#9673;</span> Preset</div>
+            <div class="chip-row" id="preset-chips">
+                <button type="button" class="chip" data-preset="easy">Easy</button>
+                <button type="button" class="chip active" data-preset="medium">Medium</button>
+                <button type="button" class="chip" data-preset="hard">Hard</button>
+                <button type="button" class="chip" data-preset="custom">Custom</button>
+            </div>
+        </div>
+
+        <div class="setting-section">
+            <div class="section-label"><span class="section-icon">&#9634;</span> Object complexity</div>
+            <div class="range-pair">
+                <div class="setting-row">
+                    <label>Min cubes <span id="min-cubes-value">8</span></label>
+                    <input type="range" id="min-cubes-slider" min="3" max="24" step="1" value="8">
+                </div>
+                <div class="setting-row">
+                    <label>Max cubes <span id="max-cubes-value">12</span></label>
+                    <input type="range" id="max-cubes-slider" min="3" max="24" step="1" value="12">
+                </div>
+            </div>
+            <div class="setting-row">
+                <label>3D depth</label>
+                <div class="chip-row" id="depth-chips">
+                    <button type="button" class="chip" data-depth="1">Compact</button>
+                    <button type="button" class="chip active" data-depth="2">Balanced</button>
+                    <button type="button" class="chip" data-depth="3">Sprawling</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="setting-section">
+            <div class="section-label"><span class="section-icon">&#9202;</span> Exposure time</div>
+            <div class="setting-row">
+                <div class="chip-row" id="exposure-chips">
+                    <button type="button" class="chip" data-time="1">1s</button>
+                    <button type="button" class="chip" data-time="2">2s</button>
+                    <button type="button" class="chip" data-time="3">3s</button>
+                    <button type="button" class="chip active" data-time="5">5s</button>
+                    <button type="button" class="chip" data-time="10">10s</button>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label>Custom (seconds)</label>
+                <input type="number" id="set-time" value="5" min="1" max="60">
+            </div>
+        </div>
+
+        <button id="close-settings" class="action-btn" style="width:100%;">Save &amp; restart</button>
+    </div>
+</div>
+
+<div id="seed-tag"></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
